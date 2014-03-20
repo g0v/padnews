@@ -1,0 +1,22 @@
+{
+  "name": "padnews",
+  "version": "0.0.1",
+  "description": "Realtime news from a single hackpad.",
+  "main": "./lib/padnews.js",
+  "scripts": {
+    "start": "node ./index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "hackpad",
+    "news"
+  ],
+  "author": "caasi Huang",
+  "license": "ISC",
+  "dependencies": {
+    "hackpad": "0.0.3",
+    "request": "^2.34.0",
+    "split": "^0.3.0",
+    "diff": "^1.0.8"
+  }
+}
