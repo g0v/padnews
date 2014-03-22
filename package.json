@@ -1,11 +1,15 @@
 {
   "name": "padnews",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Realtime news from a single hackpad.",
   "main": "./lib/padnews.js",
   "scripts": {
     "start": "node ./index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:caasi/padnews.git"
   },
   "keywords": [
     "hackpad",
@@ -13,6 +17,10 @@
   ],
   "author": "caasi Huang",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/caasi/padnews/issues"
+  },
+  "homepage": "https://github.com/caasi/padnews",
   "dependencies": {
     "hackpad": "0.0.3",
     "request": "^2.34.0",
