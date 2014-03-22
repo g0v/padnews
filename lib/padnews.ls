@@ -1,5 +1,4 @@
 require! <[request split deep-diff]>
-replace-stream = require \replacestream
 
 class Padnews
   (@id, @domain) ->
