@@ -1,6 +1,6 @@
 {
   "name": "padnews",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Realtime news from a single hackpad.",
   "main": "./lib/padnews.js",
   "scripts": {

@@ -1,15 +1,17 @@
 require! <[request split deep-diff]>
+replace-stream = require \replacestream
 
 class Padnews
-  (@id) ->
+  (@id, @domain) ->
+    @domain = if @domain then "#{domain}." else ''
     @news = []
-  separator: /(\r?\n|<\/p>|<p>)/
+  separator: /(<\/p>|<p>)/
   match: /\s*(\d?\d:\S\S)\s*(?:\[\s*(.+)\s*\])?\s*(.+)\s*/
   get: (cb) ->
     var last
     result = []
     request
-      .get "https://g0v.hackpad.com/ep/pad/static/#{@id}"
+      .get "https://#{@domain}hackpad.com/ep/pad/static/#{@id}"
       .pipe split @separator
       .on \data ~>
         news = @match.exec it
@@ -26,20 +28,15 @@ class Padnews
   run: (delay, on-msg) !->
     do update-loop = ~>
       news <~ @get
-      new-entries = []
       for i, current of news
         prev = @news[i]
         if prev
-          var content
           ds = deep-diff.diff current, prev
           continue if not ds
-          prev <<< current
           on-msg? \update, current, ds
-          break
         else
-          new-entries.push current
           on-msg? \create current
-      Array.prototype.push.apply @news, new-entries
+      @news = news
       setTimeout update-loop, delay
 
 module.exports = Padnews
