@@ -1,6 +1,6 @@
 {
   "name": "padnews",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Realtime news from a single hackpad.",
   "main": "./lib/padnews.js",
   "scripts": {
@@ -23,7 +23,6 @@
   "dependencies": {
     "request": "^2.34.0",
     "split": "^0.3.0",
-    "diff": "^1.0.8",
     "deep-diff": "^0.1.4"
   }
 }

@@ -1,4 +1,4 @@
-require! <[request split diff deep-diff]>
+require! <[request split deep-diff]>
 
 class Padnews
   (@id) ->
@@ -30,26 +30,12 @@ class Padnews
       for i, current of news
         prev = @news[i]
         if prev
-          updated = false
-          continue if current.time is prev.time and current.location is prev.location and current.content is prev.content
           var content
-          count = 0
           ds = deep-diff.diff current, prev
           continue if not ds
-          for d in ds
-            if d.path.0 is \time or d.path.0 is \location
-              update = true
-              break
-            content = d if d.path.0 is \content
-            if content
-              parts = diff.diffChars content.lhs, content.rhs
-              for part in parts
-                count += part.value.length if part.added or part.removed
-          updated = true if count < 5
-          if updated
-            prev <<< current
-            on-msg? \update, current
-            break
+          prev <<< current
+          on-msg? \update, current, ds
+          break
         else
           new-entries.push current
           on-msg? \create current
