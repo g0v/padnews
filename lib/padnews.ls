@@ -32,7 +32,7 @@ class Padnews
         if prev
           ds = deep-diff.diff current, prev
           continue if not ds
-          on-msg? \update, current, ds
+          on-msg? \update, current, i, ds
         else
           on-msg? \create current
       @news = news
