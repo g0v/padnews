@@ -34,7 +34,7 @@ class Padnews
           continue if not ds
           on-msg? \update, current, i, ds
         else
-          on-msg? \create current
+          on-msg? \create current, i
       @news = news
       setTimeout update-loop, delay
 
