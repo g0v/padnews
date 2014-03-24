@@ -33,9 +33,10 @@ class Padnews
             on-msg?call this, \update, current, i, ds
           else
             on-msg?call this, \create current, i
+        @news = news
       else if news.length
+        @news = news
         on-msg?call this, \ready
-      @news = news
     do update-loop = ~>
       @get update-news
       setTimeout update-loop, delay
