@@ -25,6 +25,10 @@ class Padnews
       .on \end ->
         cb? result.reverse!
   run: (delay, on-msg) !->
+    news <~ @get
+    @news = news
+    on-msg? \ready
+    setTimeout update-loop, delay
     do update-loop = ~>
       news <~ @get
       for i, current of news
