@@ -27,7 +27,7 @@ class Padnews
   run: (delay, on-msg) !->
     news <~ @get
     @news = news
-    on-msg? \ready
+    on-msg?call this, \ready
     setTimeout update-loop, delay
     do update-loop = ~>
       news <~ @get
@@ -36,9 +36,9 @@ class Padnews
         if prev
           ds = deep-diff.diff current, prev
           continue if not ds
-          on-msg? \update, current, i, ds
+          on-msg?call this, \update, current, i, ds
         else
-          on-msg? \create current, i
+          on-msg?call this, \create current, i
       @news = news
       setTimeout update-loop, delay
 
