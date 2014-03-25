@@ -25,7 +25,7 @@ class Padnews
   run: (delay, on-msg) !->
     update-news = (news) ~>
       if @news.length
-        for i from 0 til news.length
+        for i til news.length
           current = news[i]
           prev    = @news[i]
           if prev
@@ -34,10 +34,9 @@ class Padnews
             on-msg?call this, \update, current, i, ds
           else
             on-msg?call this, \create current, i
-        i = news.length
-        for j from i til @news.length
-          prev = @news[j]
-          on-msg?call this, \remove, prev, j
+        for i from @news.length-1 to news.length by -1
+          prev = @news[i]
+          on-msg?call this, \remove, prev, i
         @news = news
       else if news.length
         @news = news
