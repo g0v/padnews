@@ -11,7 +11,7 @@ class Padnews
       .get "https://#{@domain}hackpad.com/ep/pad/static/#{@id}"
       .pipe split /(<\/p>|<p>)/
       .on \data !->
-        news = /\s*(\d?\d:\S\S)\s*(?:\[\s*(.+)\s*\])?\s*(.+)\s*/.exec it
+        news = /^\s*(\d?\d:\S\S)\s*(?:\[\s*([^\[]*)\s*\])?\s*(.+)\s*/.exec it
         if news
           last :=
             time:     news.1
@@ -25,14 +25,19 @@ class Padnews
   run: (delay, on-msg) !->
     update-news = (news) ~>
       if @news.length
-        for i, current of news
-          prev = @news[i]
+        for i from 0 til news.length
+          current = news[i]
+          prev    = @news[i]
           if prev
             ds = deep-diff.diff current, prev
             continue if not ds
             on-msg?call this, \update, current, i, ds
           else
             on-msg?call this, \create current, i
+        i = news.length
+        for j from i til @news.length
+          prev = @news[j]
+          on-msg?call this, \remove, prev, j
         @news = news
       else if news.length
         @news = news
