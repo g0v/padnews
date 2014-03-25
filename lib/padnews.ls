@@ -11,6 +11,8 @@ class Padnews
       .get "https://#{@domain}hackpad.com/ep/pad/static/#{@id}"
       .pipe split /(<\/p>|<p>)/
       .on \data !->
+        it .= replace /&nbsp;/gi ' '
+        it .= replace /<[^<]*>/gi ''
         news = /^\s*(\d?\d:\S\S)\s*(?:\[\s*([^\[]*)\s*\])?\s*(.+)\s*/.exec it
         if news
           last :=
@@ -18,7 +20,7 @@ class Padnews
             location: news.2 or ''
             content:  [news.3]
           result.push last
-        else if it.length and not /(\r?\n|^<.*>$)/.test it
+        else if it.length and not /\r?\n/.test it
           last?content.push it
       .on \end !->
         cb? result.reverse!
