@@ -1,4 +1,4 @@
-require! <[request split deep-diff]>
+require! <[request ent deep-diff]>
 
 class Padnews
   (@id, @domain) ->
@@ -11,8 +11,8 @@ class Padnews
     @news = []
     var last
     for line in body.split /(<\/p>|<p>)/
-      line .= replace /&nbsp;/gi ' '
       line .= replace /<[^<]*>/gi ''
+      line = ent.decode line
       news = /^\s*(\d?\d:\S\S)\s*(?:\[\s*([^\[]*)\s*\])?\s*(.+)\s*/.exec line
       if news
         last :=

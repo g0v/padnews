@@ -1,6 +1,6 @@
 {
   "name": "padnews",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "Realtime news from a single hackpad.",
   "main": "./lib/padnews.js",
   "scripts": {
@@ -22,7 +22,7 @@
   "homepage": "https://github.com/caasi/padnews",
   "dependencies": {
     "request": "^2.34.0",
-    "split": "^0.3.0",
-    "deep-diff": "^0.1.4"
+    "deep-diff": "^0.1.4",
+    "ent": "^0.1.0"
   }
 }
