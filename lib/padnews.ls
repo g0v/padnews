@@ -1,7 +1,9 @@
-require! <[request ent deep-diff]>
+require! <[request ent deep-diff moment]>
 
 class Padnews
+  pad-zero = -> if it.length is 1 then "0#it" else it
   regex =
+    date:     /^\s*(\d?\d)\s*月\s*(\d?\d)\s*日\s*$/
     splitter: /(<\/p>|<p>)/
     tags:     /<[^<]*>/gi
     entry:    /^\s*(\d?\d:\S\S)\s*(?:\[\s*([^\[]*)\s*\])?\s*(.+)\s*/
@@ -11,6 +13,7 @@ class Padnews
     @delay = 5000
     @prev = []
     @news = []
+    @year = new Date!getFullYear!
   get-by-api: (err, data) !~> @get err, null, data
   get: (err, res, body) !~>
     return if err or res.statusCode isnt 200
@@ -18,14 +21,26 @@ class Padnews
     @news = []
     var last
     for line in body.split regex.splitter
+      # clean up
       line .= replace regex.tags, ''
       line = ent.decode line
+      # is this line a date?
+      date = regex.date.exec line
+      if date
+        for entry in @news
+          if not entry.month and not entry.date
+            entry <<< month: date.1, date: date.2
+            entry.possible-timestamp = moment "#{@year}-#{pad-zero entry.month}-#{pad-zero entry.date}T#{entry.time}" .unix!
+        continue
+      # is this line a news entry?
       news = regex.entry.exec line
       if news
         last :=
-          time:     news.1
-          location: news.2 or ''
-          content:  [news.3]
+          month:         null
+          date:          null
+          time:          if news.1.length is 4 then "0#{news.1}" else news.1
+          location:      news.2 or ''
+          content:       [news.3]
         @news.push last
       else if line.length and not regex.newline.test line
         last?content.push line
