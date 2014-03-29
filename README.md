@@ -1,4 +1,4 @@
-Padnews
+padnews
 =======
 
 Realtime news from a single hackpad.
