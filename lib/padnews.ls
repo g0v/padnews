@@ -27,20 +27,28 @@ class Padnews
       # is this line a date?
       date = regex.date.exec line
       if date
-        for entry in @news
-          if not entry.month and not entry.date
-            entry <<< month: date.1, date: date.2
-            entry.possible-timestamp = moment "#{@year}-#{pad-zero entry.month}-#{pad-zero entry.date}T#{entry.time}" .unix!
+        var prev
+        for i from @news.length-1 to 0 by -1
+          entry = @news[i]
+          continue if entry.month or entry.date
+          entry <<< month: date.1, date: date.2
+          entry.timestamp = moment "#{@year}-#{pad-zero entry.month}-#{pad-zero entry.date}T#{entry.time}" .unix!
+          if not isNaN entry.timestamp and not isNaN prev?timestamp
+              # orders of entries are not inverted yet
+            entry.interval = entry.timestamp - prev.timestamp
+          prev = entry
         continue
       # is this line a news entry?
       news = regex.entry.exec line
       if news
         last :=
-          month:         null
-          date:          null
-          time:          if news.1.length is 4 then "0#{news.1}" else news.1
-          location:      news.2 or ''
-          content:       [news.3]
+          month:      null
+          date:       null
+          time:       if news.1.length is 4 then "0#{news.1}" else news.1
+          timestamp:  NaN
+          interval:   NaN
+          location:   news.2 or ''
+          content:    [news.3]
         @news.push last
       else if line.length and not regex.newline.test line
         last?content.push line
