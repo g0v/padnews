@@ -27,7 +27,7 @@ class Padnews
       # is this line a date?
       date = regex.date.exec line
       if date
-        var prev
+        prev = null
         for i from @news.length-1 to 0 by -1
           entry = @news[i]
           continue if entry.month or entry.date
