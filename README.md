@@ -3,6 +3,8 @@ Padnews
 
 Realtime news from a single hackpad.
 
+Please check [padnews-web](https://github.com/g0v/padnews-web) for more information.
+
 Usage
 -----
 
@@ -14,5 +16,3 @@ Usage
 22:52 [location] message
 22:52 [other location] message
 ```
-
-* then get the pad ID and see index.js
