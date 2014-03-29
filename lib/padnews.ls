@@ -27,16 +27,11 @@ class Padnews
       # is this line a date?
       date = regex.date.exec line
       if date
-        prev = null
         for i from @news.length-1 to 0 by -1
           entry = @news[i]
-          continue if entry.month or entry.date
-          entry <<< month: date.1, date: date.2
-          entry.timestamp = moment "#{@year}-#{pad-zero entry.month}-#{pad-zero entry.date}T#{entry.time}" .unix!
-          if not isNaN entry.timestamp and not isNaN prev?timestamp
-              # orders of entries are not inverted yet
-            entry.interval = entry.timestamp - prev.timestamp
-          prev = entry
+          if not entry.month and not entry.date
+            entry <<< month: date.1, date: date.2
+            entry.timestamp = moment "#{@year}-#{pad-zero entry.month}-#{pad-zero entry.date}T#{entry.time}" .unix!
         continue
       # is this line a news entry?
       news = regex.entry.exec line
@@ -53,6 +48,11 @@ class Padnews
       else if line.length and not regex.newline.test line
         last?content.push line
     @news.reverse!
+    prev = null
+    for entry in @news
+      if not isNaN entry.timestamp and not isNaN prev?timestamp
+        entry.interval = entry.timestamp - prev.timestamp
+      prev = entry
     @did-update!
   did-update: !->
     if @prev.length
