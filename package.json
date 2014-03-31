@@ -22,7 +22,7 @@
   "homepage": "https://github.com/caasi/padnews",
   "dependencies": {
     "request": "^2.34.0",
-    "deep-diff": "^0.1.4",
+    "deep-diff": "caasi/diff",
     "ent": "^0.1.0",
     "moment": "^2.5.1"
   }
