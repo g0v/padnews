@@ -73,7 +73,7 @@ class Padnews
     setTimeout @run, @delay
   run: !~>
     if not @api-client
-      request "https://#{@domain}hackpad.com/ep/pad/static/#{@id}" @get
+      request "https://#{@domain}hackpad.tw/ep/pad/static/#{@id}" @get
     else
       @api-client.export @id, \latest, \txt, @get-by-api
 
